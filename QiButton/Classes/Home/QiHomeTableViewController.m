@@ -10,6 +10,8 @@
 #import "QiButtonTableViewController.h"
 
 static NSString* const kHomeCellReuseIDString = @"kHomeCellReuseIDString";
+static CGFloat const kHomeCellHeight = 300.0;
+
 @interface QiHomeTableViewController ()
 
 /**TableView 数据数组*/
@@ -29,10 +31,13 @@ static NSString* const kHomeCellReuseIDString = @"kHomeCellReuseIDString";
 
 
 - (void)prepareData{
+    
     self.titleArray = @[@"UIButton"];
+    
 }
 
 - (void)setupUI{
+    
     self.title = @"首页";
 }
 
@@ -50,7 +55,7 @@ static NSString* const kHomeCellReuseIDString = @"kHomeCellReuseIDString";
 #pragma mark - Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 300.f;
+    return kHomeCellHeight;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -65,7 +70,7 @@ static NSString* const kHomeCellReuseIDString = @"kHomeCellReuseIDString";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kHomeCellReuseIDString forIndexPath:indexPath];
     cell.textLabel.text = _titleArray[indexPath.row];
     cell.textLabel.font = [UIFont systemFontOfSize:60.f];
-    cell.backgroundColor = [UIColor colorWithRed:(arc4random() % 256)/255.f green:(arc4random() % 256)/255.f blue:(arc4random() % 256)/255.f alpha:1.f];
+    cell.backgroundColor = WWRandomColor;
     return cell;
 }
 

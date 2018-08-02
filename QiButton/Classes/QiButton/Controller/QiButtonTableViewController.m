@@ -10,6 +10,7 @@
 #import "QiButtonDetailViewController.h"
 
 static NSString* const kButtonTableViewCellReuseIDString = @"kButtonTableViewCellReuseIDString";
+static CGFloat const kButtonTableViewCellHeight = 200.0;
 
 @interface QiButtonTableViewController ()
 
@@ -36,6 +37,7 @@ static NSString* const kButtonTableViewCellReuseIDString = @"kButtonTableViewCel
 - (void)setupUI{
     self.view.backgroundColor = [UIColor grayColor];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kButtonTableViewCellReuseIDString];
+    self.tableView.estimatedRowHeight = kButtonTableViewCellHeight;
 }
 
 #pragma mark - Action functions
@@ -58,7 +60,7 @@ static NSString* const kButtonTableViewCellReuseIDString = @"kButtonTableViewCel
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 200.f;
+    return kButtonTableViewCellHeight;
     
 }
 
