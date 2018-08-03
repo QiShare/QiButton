@@ -10,7 +10,7 @@
 #import "QiButtonDetailViewController.h"
 
 static NSString* const kButtonTableViewCellReuseIDString = @"kButtonTableViewCellReuseIDString";
-static CGFloat const kButtonTableViewCellHeight = 200.0;
+static CGFloat const kButtonTableViewCellHeight = 120.0;
 
 @interface QiButtonTableViewController ()
 
@@ -30,6 +30,7 @@ static CGFloat const kButtonTableViewCellHeight = 200.0;
 }
 
 - (void)prepareData{
+    [[UIButton new] addTarget:self action:@selector(buttonWithType:) forControlEvents:UIControlEventTouchUpInside];
     self.titleArray = @[@"UIButton基础使用",@"UIButton ContentMode",@"UIButton 多个状态点击",@"UIButton 动画",@"UIButton 扩大点击区域",@"UIButton 图片文字排列"];
     //,@"UIButton image缓存",@"UIButton 自己实现"
 }

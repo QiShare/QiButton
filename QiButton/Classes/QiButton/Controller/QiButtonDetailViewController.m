@@ -137,7 +137,7 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
 #pragma mark - UIButton 基础使用
 - (void)buttonBasicUse{
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    NSArray *buttonTypeArr = @[@"UIButtonTypeCustom",
+    NSArray <NSString *>*buttonTypeArr = @[@"UIButtonTypeCustom",
                                @"UIButtonTypeSystem NS_ENUM_AVAILABLE_IOS(7_0)",
                                @"UIButtonTypeDetailDisclosure",
                                @"UIButtonTypeInfoLight",
@@ -160,18 +160,52 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
             [self.view addSubview:btn];
             btn.frame = CGRectMake(kButtonWidth *col, kButtonHeight * row, kButtonWidth, kButtonHeight);
             [btn setTitle:buttonTypeArr[buttonTypeIndex] forState:UIControlStateNormal];
+            NSDictionary *foreAttriDict = @{NSForegroundColorAttributeName:[UIColor purpleColor]};
+            NSDictionary *aheadAttriDict = @{NSForegroundColorAttributeName:[UIColor yellowColor]};
+            NSMutableAttributedString *attriM = [[NSMutableAttributedString alloc]initWithString:buttonTypeArr[buttonTypeIndex]];
+            [attriM addAttributes:foreAttriDict range:NSMakeRange(0, 12)];
+            [attriM addAttributes:aheadAttriDict range:NSMakeRange(12, (buttonTypeArr[buttonTypeIndex].length)-12)];
+            [btn setAttributedTitle:attriM forState:UIControlStateSelected];
             if (row == 2 && col == 2) {
                 btn.tag = 8;
                 [btn setTitle:@"复位" forState:UIControlStateNormal];
+                [btn setTitle:@"复位" forState:UIControlStateSelected|UIControlStateHighlighted];
             }
             btn.titleLabel.numberOfLines = 0;
-            [btn addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [btn addTarget:self action:@selector(buttonBasicUseClicked:) forControlEvents:UIControlEventTouchUpInside];
+
             buttonTypeIndex++;
-            if (buttonTypeIndex == 4 || buttonTypeIndex == 5) {
-                //此处看起来的 Dark 和 Light确实是一个暗一个亮，不过并不像是简单的理解的一个亮一个暗
-                [btn setBackgroundColor:[UIColor blueColor]];
-            }else{
+             [btn setBackgroundColor:[[UIColor redColor]colorWithAlphaComponent: 1.0/9.0 * buttonTypeIndex]];
+            if(buttonTypeIndex == 1){
+                [btn setImage:[UIImage imageNamed:@"smallQiShareLogo"] forState:UIControlStateNormal];
+            }else if (buttonTypeIndex == 2) {
+                btn.layer.borderWidth = 6.0;
+                btn.layer.borderColor = [UIColor yellowColor].CGColor;
+            }else if (buttonTypeIndex == 3) {
                 [btn setBackgroundColor:[[UIColor redColor]colorWithAlphaComponent: 1.0/9.0 * buttonTypeIndex]];
+                btn.layer.shadowOffset = CGSizeMake(2.0, 2.0);
+                btn.layer.cornerRadius = 5.0;
+                btn.layer.shadowOpacity = 0.8;
+                btn.layer.shadowColor = [UIColor blackColor].CGColor;
+                btn.layer.shadowRadius = 8.0;
+            }
+            else if (buttonTypeIndex == 4 || buttonTypeIndex == 5) {
+                //此处看起来的 Dark 和 Light确实是一个暗一个亮，不过并不像是简单的理解的一个亮一个暗
+                [btn setBackgroundColor:[UIColor orangeColor]];
+                btn.layer.cornerRadius = 20.0;
+                btn.layer.masksToBounds = YES;
+              
+            }else if(buttonTypeIndex == 6){
+                //UIButton 设置指定圆角
+                //https://www.jianshu.com/p/7bd6d1424d96
+                btn.backgroundColor = [UIColor cyanColor];
+                UIRectCorner rectC = UIRectCornerTopLeft|UIRectCornerBottomRight;
+                UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRoundedRect:btn.bounds byRoundingCorners:rectC cornerRadii:CGSizeMake(30.0, 30.0)];
+                CAShapeLayer *maskLayer = [CAShapeLayer layer];
+                maskLayer.frame = btn.bounds;
+                maskLayer.path = bezierPath.CGPath;
+                btn.layer.mask = maskLayer;
             }
         }
     }
@@ -202,45 +236,47 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
 #pragma mark - button 点击状态
 - (void)buttonClickState{
     //学习网址：https://www.jianshu.com/p/57b2c41448bf
-    UIButton *preventVoilenceStateBtn = [UIButton new];
-    preventVoilenceStateBtn.timeInterval = 2.f;
-    [self.view addSubview:preventVoilenceStateBtn];
-    preventVoilenceStateBtn.frame = CGRectMake(0.f, 0.f, 300.f, 300.f);
-    preventVoilenceStateBtn.backgroundColor = [UIColor lightGrayColor];
-    [preventVoilenceStateBtn setImage:
+    UIButton *preventViolenceStateBtn = [UIButton new];
+    preventViolenceStateBtn.timeInterval = 2.f;
+    [self.view addSubview:preventViolenceStateBtn];
+    preventViolenceStateBtn.frame = CGRectMake(0.f, 0.f, SCREEN_WIDTH, 300.f);
+    preventViolenceStateBtn.backgroundColor = [UIColor lightGrayColor];
+    [preventViolenceStateBtn setImage:
      [UIImage imageNamed:@"praise_normal"]
               forState:UIControlStateNormal];
-    [preventVoilenceStateBtn setImage:[UIImage imageNamed:@"praise_sel"]
+    [preventViolenceStateBtn setTitle:@"防止暴力点击" forState:UIControlStateNormal];
+    [preventViolenceStateBtn setImage:[UIImage imageNamed:@"praise_sel"]
               forState:UIControlStateSelected];
     //设置选中状态的高亮状态
-    [preventVoilenceStateBtn setImage:[UIImage imageNamed:@"praise_highlighted"]
+    [preventViolenceStateBtn setImage:[UIImage imageNamed:@"praise_highlighted"]
               forState:UIControlStateSelected|UIControlStateHighlighted];
-    [preventVoilenceStateBtn setImage:[UIImage imageNamed:@"praise_highlighted"]
+    [preventViolenceStateBtn setImage:[UIImage imageNamed:@"praise_highlighted"]
               forState:UIControlStateHighlighted];
-    [preventVoilenceStateBtn addTarget:self
+    [preventViolenceStateBtn addTarget:self
                  action:@selector(stateButtonClicked:)
        forControlEvents:UIControlEventTouchUpInside];
     
     //这个按钮没有做处理 点击间隔时间的控制
-    UIButton *voilenceTestStateBtn = [UIButton new];
-    [self.view addSubview:voilenceTestStateBtn];
-    voilenceTestStateBtn.frame = CGRectMake(0.f, 350.f, 300.f, 300.f);
+    UIButton *violenceTestStateBtn = [UIButton new];
+    [self.view addSubview:violenceTestStateBtn];
+    violenceTestStateBtn.frame = CGRectMake(0.f, 350.f, SCREEN_WIDTH, 300.f);
     //    stateBtn2.center = self.view.center;
-    voilenceTestStateBtn.backgroundColor = [UIColor lightGrayColor];
-    [voilenceTestStateBtn setImage:[UIImage imageNamed:@"praise_normal"] forState:UIControlStateNormal];
-    [voilenceTestStateBtn setImage:[UIImage imageNamed:@"praise_sel"] forState:UIControlStateSelected];
+    violenceTestStateBtn.backgroundColor = [UIColor lightGrayColor];
+    [violenceTestStateBtn setImage:[UIImage imageNamed:@"praise_normal"] forState:UIControlStateNormal];
+    [violenceTestStateBtn setImage:[UIImage imageNamed:@"praise_sel"] forState:UIControlStateSelected];
+    [violenceTestStateBtn setTitle:@"暴力点击测试按钮" forState:UIControlStateNormal];
     //UIControlStateSelected
     //设置选中状态的高亮状态
-    [voilenceTestStateBtn setImage:[UIImage imageNamed:@"praise_highlighted"] forState:UIControlStateHighlighted];
-    [voilenceTestStateBtn addTarget:self action:@selector(stateButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [violenceTestStateBtn setImage:[UIImage imageNamed:@"praise_highlighted"] forState:UIControlStateHighlighted];
+    [violenceTestStateBtn addTarget:self action:@selector(stateButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     _violenceClickedCountLabel = [UILabel new];
-    _violenceClickedCountLabel.backgroundColor = [UIColor darkGrayColor];
-    _violenceClickedCountLabel.text = @"0";
+    _violenceClickedCountLabel.backgroundColor = [UIColor redColor];
+    _violenceClickedCountLabel.text = @"点击次数0";
     _violenceClickedCountLabel.font = [UIFont systemFontOfSize:32.f];
     [self.view addSubview:_violenceClickedCountLabel];
-    _violenceClickedCountLabel.frame = CGRectMake(0, 0, 300.f, 40.f);
-    _violenceClickedCountLabel.center = self.view.center;
+    _violenceClickedCountLabel.frame = CGRectMake(0, 300.0, SCREEN_WIDTH, 50.f);
+//    _violenceClickedCountLabel.center = self.view.center;
     
 }
 
@@ -266,7 +302,7 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
     [self.view addSubview:basicAnimateBtn];
     basicAnimateBtn.frame = CGRectMake(0.0, 0.0, 150.0, 150.0);
     basicAnimateBtn.backgroundColor = [UIColor purpleColor];
-    [basicAnimateBtn setTitle:@"opacity position transform.scale.x" forState:UIControlStateNormal];
+    [basicAnimateBtn setTitle:@"opacity position transform.scale.x transform.scale.y" forState:UIControlStateNormal];
     basicAnimateBtn.titleLabel.numberOfLines = 0;
     [basicAnimateBtn addTarget:self action:@selector(basicAnimationButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -372,16 +408,19 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
     WWLog(@"");
 }
 
+#pragma mark - function Actions ------------------
 
-- (void)btnClicked:(UIButton *)sender{
+- (void)buttonBasicUseClicked:(UIButton *)sender{
     if (sender.tag == 8) {
         //复位tag 为 8
         [self.buttonArrayM enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             ((UIButton *)obj).enabled = YES;
+            ((UIButton *)obj).selected = NO;
         }];
         return;
     }
-    sender.enabled = !sender.enabled;
+    sender.selected = !sender.selected;
+//    sender.enabled = !sender.enabled;
 }
 
 
@@ -399,8 +438,9 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
 
 #pragma mark - 按钮基础动画
 - (void)basicAnimationButtonClicked:(UIButton *)sender{
-    NSArray *propertyArr = @[@"opacity",@"position",@"transform.scale.x"];
-    NSArray *valueArr = @[@(1.0),@(0.0),[NSValue valueWithCGPoint:CGPointMake(300.0,300.0)],[NSValue valueWithCGPoint:sender.center],@(1.0),@(0.0),[UIColor redColor],[UIColor yellowColor],@(M_PI_2 / 3.f),@(M_PI_2 / 2.f)];
+    NSArray *propertyArr = @[@"opacity",@"position",@"transform.scale.x",@"transform.scale.y"];
+    //@"transform.scale.z" Z 方向没得变
+    NSArray *valueArr = @[@(1.0),@(0.0),[NSValue valueWithCGPoint:CGPointMake(300.0,300.0)],[NSValue valueWithCGPoint:sender.center],@(1.0),@(0.0),@(1.0),@(0.0),@(1.0),@(0.0),[UIColor redColor],[UIColor yellowColor],@(M_PI_2 / 3.f),@(M_PI_2 / 2.f),@(M_PI_2 / 3.f),@(M_PI_2 / 2.f)];
 
     CABasicAnimation *basicAnimation = [CABasicAnimation animationWithKeyPath:propertyArr[(kButtonClickedCount % propertyArr.count)]];
     //    basicAnimation.removedOnCompletion = NO;

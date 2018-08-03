@@ -24,6 +24,7 @@
 		EE1AEF20211305E400CF5164 /* QiHomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE1AEF1F211305E400CF5164 /* QiHomeTableViewController.m */; };
 		EE1AEF2621130D7500CF5164 /* QiButtonTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE1AEF2521130D7500CF5164 /* QiButtonTableViewController.m */; };
 		EE1AEF2921130D8E00CF5164 /* QiButtonDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE1AEF2821130D8E00CF5164 /* QiButtonDetailViewController.m */; };
+		EEF900412114368D00F6F948 /* UIView+WWAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = EEF900402114368D00F6F948 /* UIView+WWAdd.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,8 @@
 		EE1AEF2521130D7500CF5164 /* QiButtonTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QiButtonTableViewController.m; sourceTree = "<group>"; };
 		EE1AEF2721130D8E00CF5164 /* QiButtonDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QiButtonDetailViewController.h; sourceTree = "<group>"; };
 		EE1AEF2821130D8E00CF5164 /* QiButtonDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QiButtonDetailViewController.m; sourceTree = "<group>"; };
+		EEF9003F2114368D00F6F948 /* UIView+WWAdd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+WWAdd.h"; sourceTree = "<group>"; };
+		EEF900402114368D00F6F948 /* UIView+WWAdd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+WWAdd.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +168,7 @@
 		EE1AEEFE211304AB00CF5164 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				EEF9003E2114365F00F6F948 /* UIViewCategory */,
 				EE1AEEFF211304AB00CF5164 /* UIButton-touch */,
 			);
 			path = Category;
@@ -271,6 +275,15 @@
 				EE1AEF2821130D8E00CF5164 /* QiButtonDetailViewController.m */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		EEF9003E2114365F00F6F948 /* UIViewCategory */ = {
+			isa = PBXGroup;
+			children = (
+				EEF9003F2114368D00F6F948 /* UIView+WWAdd.h */,
+				EEF900402114368D00F6F948 /* UIView+WWAdd.m */,
+			);
+			path = UIViewCategory;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -415,6 +428,7 @@
 				EE1AEF20211305E400CF5164 /* QiHomeTableViewController.m in Sources */,
 				EE1AEF17211304AB00CF5164 /* NullSafe.m in Sources */,
 				EE1AEF14211304AB00CF5164 /* UIButton+Delay.m in Sources */,
+				EEF900412114368D00F6F948 /* UIView+WWAdd.m in Sources */,
 				EE1AEF18211304AB00CF5164 /* WWButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -584,8 +598,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E6LSH6U6V8;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/QiButton/SupportingFiles/Config/WWDailyPrefixHeader.pch";
 				INFOPLIST_FILE = QiButton/Info.plist;
@@ -596,7 +611,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.qishare.wyw.QiButton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -604,8 +619,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E6LSH6U6V8;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/QiButton/SupportingFiles/Config/WWDailyPrefixHeader.pch";
 				INFOPLIST_FILE = QiButton/Info.plist;
@@ -616,7 +632,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.qishare.wyw.QiButton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
