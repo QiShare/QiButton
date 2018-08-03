@@ -30,7 +30,7 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
 /**TableView数据数组*/
 @property (nonatomic,copy) NSArray *titleArray;
 /** 承载button的可变数组 */
-@property (nonatomic,strong) NSMutableArray *buttonArrayM;
+@property (nonatomic,strong) NSMutableArray<UIButton *> *buttonArrayM;
 /** contentModeArray */
 @property (nonatomic,copy) NSArray *contentModeArray;
 /** 计数label */
@@ -146,22 +146,24 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
                                @"UIButtonTypePlain API_AVAILABLE(tvos(11.0)) API_UNAVAILABLE(ios, watchos)",
                                @"UIButtonTypeRoundedRect = UIButtonTypeSystem"];
     NSInteger buttonTypeIndex = 0;
-    CGFloat kButtonWidth = SCREEN_WIDTH / 3.f;
-    CGFloat kButtonHeight = (SCREEN_HEIGHT - WWStatusBarNavigationBarHeight) / 3.f;
-    
+//    CGFloat kButtonWidth = SCREEN_WIDTH;
+//    CGFloat kButtonHeight = (SCREEN_HEIGHT - WWStatusBarNavigationBarHeight) / 9;
     for (NSInteger row = 0; row < 3; row ++) {
         for (NSInteger col = 0; col < 3; col ++) {
             if (buttonTypeIndex > 7) {
                 buttonTypeIndex = 7;
             }
             UIButton *btn = [UIButton buttonWithType:buttonTypeIndex];
+
             [self.buttonArrayM addObject:btn];
             btn.tag = buttonTypeIndex;
             [self.view addSubview:btn];
-            btn.frame = CGRectMake(kButtonWidth *col, kButtonHeight * row, kButtonWidth, kButtonHeight);
+//            btn.frame = CGRectMake(kButtonWidth *col, kButtonHeight * row, kButtonWidth, kButtonHeight);
+//            btn.frame = CGRectMake(0, kButtonHeight * buttonTypeIndex, kButtonWidth, kButtonHeight);
+            
             [btn setTitle:buttonTypeArr[buttonTypeIndex] forState:UIControlStateNormal];
             NSDictionary *foreAttriDict = @{NSForegroundColorAttributeName:[UIColor purpleColor]};
-            NSDictionary *aheadAttriDict = @{NSForegroundColorAttributeName:[UIColor yellowColor]};
+            NSDictionary *aheadAttriDict = @{NSForegroundColorAttributeName:[UIColor cyanColor]};
             NSMutableAttributedString *attriM = [[NSMutableAttributedString alloc]initWithString:buttonTypeArr[buttonTypeIndex]];
             [attriM addAttributes:foreAttriDict range:NSMakeRange(0, 12)];
             [attriM addAttributes:aheadAttriDict range:NSMakeRange(12, (buttonTypeArr[buttonTypeIndex].length)-12)];
@@ -197,6 +199,7 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
                 btn.layer.masksToBounds = YES;
               
             }else if(buttonTypeIndex == 6){
+#if 0
                 //UIButton 设置指定圆角
                 //https://www.jianshu.com/p/7bd6d1424d96
                 btn.backgroundColor = [UIColor cyanColor];
@@ -206,8 +209,16 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
                 maskLayer.frame = btn.bounds;
                 maskLayer.path = bezierPath.CGPath;
                 btn.layer.mask = maskLayer;
+#endif
             }
         }
+        UIStackView *buttonContainerStackV = [[UIStackView alloc]initWithArrangedSubviews:[_buttonArrayM copy]];
+        buttonContainerStackV.alignment = UIStackViewAlignmentFill;
+        buttonContainerStackV.axis = UILayoutConstraintAxisVertical;
+        buttonContainerStackV.distribution = UIStackViewDistributionFillEqually;
+        [self.view addSubview:buttonContainerStackV];
+        buttonContainerStackV.frame = self.view.bounds;
+        buttonContainerStackV.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     }
 }
 
@@ -284,6 +295,14 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
 #pragma mark - button 动画
 - (void)buttonAnimate{
     
+    UIButton *basicAnimateBtn = [UIButton new];
+    [self.view addSubview:basicAnimateBtn];
+    basicAnimateBtn.frame = CGRectMake(0.0, 0.0, 150.0, 150.0);
+    basicAnimateBtn.backgroundColor = [UIColor purpleColor];
+    [basicAnimateBtn setTitle:@"opacity transform.scale.x transform.scale.y position " forState:UIControlStateNormal];
+    basicAnimateBtn.titleLabel.numberOfLines = 0;
+    [basicAnimateBtn addTarget:self action:@selector(basicAnimationButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
     UIButton *animateBtn = [UIButton new];
     [self.view addSubview:animateBtn];
     [animateBtn setTitle:@"scale move rotate" forState:UIControlStateNormal];
@@ -298,14 +317,7 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
                    action:@selector(animateButtonClicked:)
          forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *basicAnimateBtn = [UIButton new];
-    [self.view addSubview:basicAnimateBtn];
-    basicAnimateBtn.frame = CGRectMake(0.0, 0.0, 150.0, 150.0);
-    basicAnimateBtn.backgroundColor = [UIColor purpleColor];
-    [basicAnimateBtn setTitle:@"opacity position transform.scale.x transform.scale.y" forState:UIControlStateNormal];
-    basicAnimateBtn.titleLabel.numberOfLines = 0;
-    [basicAnimateBtn addTarget:self action:@selector(basicAnimationButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
+   
     UIButton *keyAnimateBtn = [UIButton new];
     [self.view addSubview:keyAnimateBtn];
     [keyAnimateBtn setTitle:@"KeyAnimate" forState:UIControlStateNormal];
@@ -420,7 +432,6 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
         return;
     }
     sender.selected = !sender.selected;
-//    sender.enabled = !sender.enabled;
 }
 
 
@@ -438,13 +449,21 @@ static NSInteger kKeyAnimateCurrentIndex = 0;
 
 #pragma mark - 按钮基础动画
 - (void)basicAnimationButtonClicked:(UIButton *)sender{
-    NSArray *propertyArr = @[@"opacity",@"position",@"transform.scale.x",@"transform.scale.y"];
     //@"transform.scale.z" Z 方向没得变
-    NSArray *valueArr = @[@(1.0),@(0.0),[NSValue valueWithCGPoint:CGPointMake(300.0,300.0)],[NSValue valueWithCGPoint:sender.center],@(1.0),@(0.0),@(1.0),@(0.0),@(1.0),@(0.0),[UIColor redColor],[UIColor yellowColor],@(M_PI_2 / 3.f),@(M_PI_2 / 2.f),@(M_PI_2 / 3.f),@(M_PI_2 / 2.f)];
+    NSArray *propertyArr = @[@"opacity",@"transform.scale.x",@"transform.scale.y",@"position"];
+     NSArray *valueArr = @[
+                 @(1.0),@(0.5),
+                 @(1.0),@(0.5),
+                 @(1.0),@(0.5),
+                 [NSValue valueWithCGPoint:CGPointMake(300.0,300.0)],[NSValue valueWithCGPoint:sender.center],
+                 @(1.0),@(0.5),
+                 [UIColor redColor],[UIColor yellowColor],
+                 @(M_PI_2 / 3.f),@(M_PI_2 / 2.f),
+                 @(M_PI_2 / 3.f),@(M_PI_2 / 2.f)];
 
     CABasicAnimation *basicAnimation = [CABasicAnimation animationWithKeyPath:propertyArr[(kButtonClickedCount % propertyArr.count)]];
-    //    basicAnimation.removedOnCompletion = NO;
     basicAnimation.autoreverses = NO;
+    basicAnimation.removedOnCompletion = NO;
     basicAnimation.fillMode = kCAFillModeForwards;
     basicAnimation.duration = 1.0;
     

@@ -70,7 +70,7 @@ static CGFloat const kHomeCellHeight = 300.0;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kHomeCellReuseIDString forIndexPath:indexPath];
     cell.textLabel.text = _titleArray[indexPath.row];
     cell.textLabel.font = [UIFont systemFontOfSize:60.f];
-    cell.backgroundColor = WWRandomColor;
+    cell.backgroundColor = [UIColor lightGrayColor];
     return cell;
 }
 

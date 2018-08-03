@@ -82,7 +82,7 @@ static CGFloat const kButtonTableViewCellHeight = 120.0;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kButtonTableViewCellReuseIDString forIndexPath:indexPath];
     cell.textLabel.text = _titleArray[indexPath.row];
     cell.textLabel.font = [UIFont systemFontOfSize:32.f];
-    cell.backgroundColor = [UIColor colorWithRed:(arc4random() % 256)/255.f green:(arc4random() % 256)/255.f blue:(arc4random() % 256)/255.f alpha:1.f];
+    cell.backgroundColor = (indexPath.row % 2) ? [UIColor whiteColor] : [UIColor lightGrayColor];
     
     return cell;
     
